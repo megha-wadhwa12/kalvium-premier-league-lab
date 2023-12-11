@@ -5,7 +5,9 @@ let currentTeam = "Manchester FC";
 let trophiesWon = 27;
 
 //Write your function here
-
+function createManager(managerName,managerAge,currentTeam,trophiesWon){
+  return [managerName,managerAge,currentTeam,trophiesWon];
+}
 // Don't edit the following code
 try {
   var manager = createManager(
@@ -22,6 +24,18 @@ try {
 var formation = [4, 4, 3];
 
 //write your function here
+function createFormation(formation){
+  if(formation.length == 0){
+    return null;
+  }else{
+    let obj = {
+      defender: formation[0],
+      midfield: formation[1],
+      forward: formation[2]
+    }
+    return obj;
+  }
+}
 
 // Dont edit the following code
 
@@ -32,22 +46,143 @@ try {
 }
 
 //Progression 3 - Filter players that debuted in ___ year
+function filterByDebut(year){
+  let res = [];
+
+  players.forEach((obj)=>{
+     if(obj.debut === year){
+       res.push(obj);
+     }
+    })
+    return res;
+}
+filterByDebut()
 
 //Progression 4 - Filter players that play at the position _______
+function filterByPosition(position){
+
+  let pos_array = [];
+  players.forEach((e)=>{
+    if(e.position === position){
+      pos_array.push(e);
+    }
+  })
+  return pos_array;
+}
 
 //Progression 5 - Filter players that have won ______ award
+function filterByAward(awardName){
+
+  let awards_array = [];
+  players.forEach((item)=>{
+    item.awards.forEach((a)=>{
+      if(a.name === awardName){
+        awards_array.push(item);
+      }
+    })
+  })
+  return awards_array;
+}
 
 //Progression 6 - Filter players that won ______ award ____ times
+function filterByAwardxTimes(awardName, noOfTimes){
+  let noOfAwardsTimes = [];
+  players.forEach((item)=>{
+    let count = 0;
+    item.awards.forEach((e)=>{
+      if(e.name === awardName){
+        count++;
+      }
+    })
+    if(count == noOfTimes){
+      noOfAwardsTimes.push(item);
+    }
+  })
+  return noOfAwardsTimes;
+}
 
 //Progression 7 - Filter players that won ______ award and belong to ______ country
+function filterByAwardxCountry(awardName, country){
+  let nameCountry = [];
+  players.forEach((item)=>{
+    item.awards.forEach((e)=>{
+      if(e.name === awardName){
+        if(item.country == country){
+          nameCountry.push(item);
+        }
+      }
+    })
+  })
+  return nameCountry;
+}
 
 //Progression 8 - Filter players that won atleast ______ awards, belong to ______ team and are younger than ____
+function filterByNoOfAwardsxTeamxAge(noOfAwards, team, age){
+
+  let isEligible = [];
+  players.forEach((item)=>{
+    if(item.age < age && item.team === team && item.awards.length >= noOfAwards){
+      isEligible.push(item);
+    }
+  })
+  return isEligible;
+}
 
 //Progression 9 - Sort players in descending order of their age
+function SortByAge(){
+  players.sort((a,b)=>{
+    return b.age - a.age;
+  })
+  return players;
+}
 
 //Progression 10 - Sort players beloging to _____ team in descending order of awards won
+function FilterByTeamxSortByNoOfAwards(team){
+
+  let filteredByTeam = players.filter((item)=>{
+   return item.team === team;
+  })
+  filteredByTeam.sort((a,b)=>{
+    return b.awards.length - a.awards.length;
+  })
+  return filteredByTeam;
+}
 
 //Challenge 1 - Sort players that have won _______ award _____ times and belong to _______ country in alphabetical order of their names
 
+function SortByNamexAwardxTimes(awardName, noOfTimes, country) {
+  const desiredAwardPlayers = players.filter(function(item) {
+      // Check if the player has the desired award a specific number of times and belongs to the specified country
+      return item.awards.filter(e => e.name === awardName).length === noOfTimes && item.country === country;
+  });
+
+  desiredAwardPlayers.sort((a, b) => {
+      // Sort by names in alphabetical order
+      const nameA = a.name.toUpperCase(); // ignore case
+      const nameB = b.name.toUpperCase();
+
+      if (nameA > nameB) {
+          return 1;
+      }
+      return 0;
+  });
+
+  return desiredAwardPlayers;
+}
 //Challenge 2 - Sort players that are older than _____ years in alphabetical order
 //Sort the awards won by them in reverse chronological order
+function SortByNamexOlderThan(age) {
+  const olderPlayers = players.filter(player => player.age > age);
+
+  olderPlayers.sort((a, b) => {
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+
+      if (nameA > nameB) {
+          return 1;
+      }
+      return 0;
+  });
+
+  return olderPlayers;
+}
